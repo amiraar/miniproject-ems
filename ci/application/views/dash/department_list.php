@@ -15,6 +15,7 @@ if ( !$_SESSION['u_name'] ) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>EMS Project</title>
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/button-spacing.css">
 	<!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -34,13 +35,13 @@ if ( !$_SESSION['u_name'] ) {
 				<?php $this->load->view('dash/inc/sidebar'); ?>
 				<!-- sidebar -->
 			</div>
+
 			<div class="col-lg-9 col-md-9">
 				<table class="table table-bordered">
 					<tr>
-						<th>ID</th>
-						<th>Name</th>
-						<th>Edit</th>
-						<th>Delete</th>
+						<th class="text-center">ID</th>
+						<th class="text-center">Department</th>
+						<th class="text-center">Actions</th>
 					</tr>
 					<?php  
 
@@ -49,10 +50,18 @@ if ( !$_SESSION['u_name'] ) {
 					{ ?>
 						
 					<tr>
-						<td><?php echo $department->d_id; ?></td>
+						<td class="text-center"><?php echo $department->d_id; ?></td>
 						<td><?php echo $department->d_name; ?></td>
-						<td><a href="<?php echo site_url(); ?>department/update_department/<?php echo $department->d_id; ?>" class="btn btn-warning btn-block btn-xs">Edit</a></td>
-						<td><a href="<?php echo site_url(); ?>department/delete_department/<?php echo $department->d_id; ?>" class="btn btn-danger btn-block btn-xs">Delete</a></td>
+						<td class="text-center">
+							<div class="action-buttons">
+								<a href="<?php echo site_url(); ?>department/update_department/<?php echo $department->d_id; ?>" class="btn btn-warning btn-xs btn-separated" title="Edit">
+									<span class="hidden-xs">Edit</span>
+								</a>
+								<a href="<?php echo site_url(); ?>department/delete_department/<?php echo $department->d_id; ?>" class="btn btn-danger btn-xs btn-separated" title="Delete" onclick="return confirm('Are you sure you want to delete this department?')">
+									<span class="hidden-xs">Delete</span>
+								</a>
+							</div>
+						</td>
 					</tr>
 
 					<?php }

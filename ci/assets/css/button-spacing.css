@@ -1,0 +1,102 @@
+/* Action Buttons Spacing Fix */
+
+/* Better spacing for action buttons in tables */
+.table .btn-group {
+    display: inline-block;
+    white-space: nowrap;
+}
+
+/* Add margin between buttons instead of using btn-group */
+.table .action-buttons {
+    white-space: nowrap;
+}
+
+.table .action-buttons .btn {
+    margin-right: 5px;
+    margin-bottom: 3px;
+    display: inline-block;
+}
+
+.table .action-buttons .btn:last-child {
+    margin-right: 0;
+}
+
+/* Alternative: Separated buttons instead of btn-group */
+.table .btn-separated {
+    margin-right: 5px;
+    margin-bottom: 3px;
+}
+
+.table .btn-separated:last-child {
+    margin-right: 0;
+}
+
+/* Better button sizes for table actions */
+.table .btn-xs {
+    padding: 2px 8px;
+    font-size: 11px;
+    line-height: 1.5;
+    border-radius: 3px;
+    min-width: 45px;
+}
+
+/* Responsive button adjustments */
+@media (max-width: 767px) {
+    .table .btn-xs {
+        padding: 4px 6px;
+        font-size: 10px;
+        min-width: 35px;
+    }
+    
+    .table .action-buttons .btn {
+        margin-right: 3px;
+        margin-bottom: 5px;
+    }
+}
+
+/* Button color improvements */
+.btn-info.btn-xs {
+    background-color: #5bc0de;
+    border-color: #46b8da;
+}
+
+.btn-warning.btn-xs {
+    background-color: #f0ad4e;
+    border-color: #eea236;
+}
+
+.btn-danger.btn-xs {
+    background-color: #d9534f;
+    border-color: #d43f3a;
+}
+
+/* Hover effects */
+.table .btn-xs:hover {
+    transform: none;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+/* Center alignment for action columns */
+.table .text-center {
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* Make sure buttons don't break on small screens */
+.table .action-buttons {
+    min-width: 120px;
+}
+
+/* For very small screens - stack buttons vertically */
+@media (max-width: 480px) {
+    .table .action-buttons .btn {
+        display: block;
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 3px;
+    }
+    
+    .table .action-buttons {
+        min-width: auto;
+    }
+}

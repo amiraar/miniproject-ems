@@ -30,11 +30,21 @@ $id = $this->uri->segment(3);
     <!-- dash data -->
     <div class="container">
       <div class="row">
+        
         <div class="col-lg-3 col-md-3">
           <!-- sidebar -->
           <?php $this->load->view('dash/inc/sidebar'); ?>
           <!-- sidebar -->
         </div>
+        
+        <div class="col-lg-9 col-md-9">
+          <div class="action-buttons">
+            <a href="<?php echo site_url(); ?>jobs/view_jobs" class="btn btn-default" title="Back">
+              <span class="hidden-xs">Back</span>
+            </a>
+          </div>
+        </div>
+
         <div class="col-lg-9 col-md-9">
           <div class="panel panel-default">
             <div class="panel-heading">Update Job</div>
@@ -44,40 +54,46 @@ $id = $this->uri->segment(3);
 
                 $jobs_list = $this->db->get_where('jobs', array('j_id' => $id));
 
-                foreach ($jobs_list->result() as $job) 
-                { ?>
-                
-                <div class="form-group">
-                  <label class="col-sm-2 control-label">Job Name</label>
-                  <div class="col-sm-10">
-                    <input type="text" name="j_name" class="form-control input-sm" value="<?php echo $job->j_name; ?>" placeholder="Job Name">
+                if ($jobs_list->num_rows() > 0) {
+                  foreach ($jobs_list->result() as $job) 
+                  { ?>
+                  
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">Job Name</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="j_name" class="form-control input-sm" value="<?php echo $job->j_name; ?>" placeholder="Job Name">
+                    </div>
                   </div>
-                </div>
 
-                <div class="form-group">
-                  <label class="col-sm-2 control-label">Department Name</label>
-                  <div class="col-sm-10">
-                    <select name="d_id" class="form-control input-sm" required>
-                      <option value="">-- Select Department --</option>
-                      <?php if (isset($departments) && !empty($departments)): ?>
-                        <?php foreach ($departments as $department): ?>
-                          <option value="<?php echo $department->d_id; ?>" <?php if($department->d_id == $job->d_id) echo 'selected'; ?>><?php echo $department->d_name; ?></option>
-                        <?php endforeach; ?>
-                      <?php else: ?>
-                        <option value="">No departments available. Please add departments first.</option>
-                      <?php endif; ?>
-                    </select>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">Department Name</label>
+                    <div class="col-sm-10">
+                      <select name="d_id" class="form-control input-sm" required>
+                        <option value="">-- Select Department --</option>
+                        <?php if (isset($departments) && !empty($departments)): ?>
+                          <?php foreach ($departments as $department): ?>
+                            <option value="<?php echo $department->d_id; ?>" <?php if($department->d_id == $job->d_id) echo 'selected'; ?>><?php echo $department->d_name; ?></option>
+                          <?php endforeach; ?>
+                        <?php else: ?>
+                          <option value="">No departments available. Please add departments first.</option>
+                        <?php endif; ?>
+                      </select>
+                    </div>
                   </div>
-                </div>
 
-                <?php }
+                  <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                      <input type="submit" name="update_job" class="btn btn-sm btn-warning" value="Update Job">
+                    </div>
+                  </div>
 
+                  <?php }
+                  
+                }else{
+                  echo '<div class="alert alert-danger">Job not found!</div>';
+                }
                 ?>
-                <div class="form-group">
-                  <div class="col-sm-offset-2 col-sm-10">
-                    <input type="submit" name="update_job" class="btn btn-sm btn-warning" value="Update Job">
-                  </div>
-                </div>
+
               </form>
             </div>
           </div>

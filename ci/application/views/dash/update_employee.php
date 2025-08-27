@@ -29,12 +29,19 @@ if ( !$_SESSION['u_name'] ) {
     <!-- dash data -->
     <div class="container">
       <div class="row">
-        <div class="col-lg-3 col-md-3">
 
+        <div class="col-lg-3 col-md-3">
           <!-- sidebar -->
           <?php $this->load->view('dash/inc/sidebar'); ?>
           <!-- sidebar -->
+        </div>
 
+        <div class="col-lg-9 col-md-9">
+          <div class="action-buttons">
+            <a href="<?php echo site_url(); ?>employees" class="btn btn-default" title="Back">
+              <span class="hidden-xs">Back</span>
+            </a>
+          </div>
         </div>
 
         <div class="col-lg-9 col-md-9">

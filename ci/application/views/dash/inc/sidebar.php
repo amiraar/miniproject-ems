@@ -1,4 +1,10 @@
 <div class="panel panel-default">
+	<div class="panel-heading">Dashboard</div>
+	<div class="list-group">
+		<a href="<?php echo site_url(); ?>dash" class="list-group-item">Dashboard</a>
+	</div>
+</div>
+<div class="panel panel-default">
 	<div class="panel-heading">Employees Actions</div>
 	<div class="list-group">
 		<a href="<?php echo site_url(); ?>employees/add_employee" class="list-group-item">Add Employee</a>

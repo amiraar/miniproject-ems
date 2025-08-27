@@ -33,6 +33,15 @@ if ( !$_SESSION['u_name'] ) {
           <?php $this->load->view('dash/inc/sidebar'); ?>
           <!-- sidebar -->
         </div>
+        
+        <div class="col-lg-9 col-md-9">
+          <div class="action-buttons">
+            <a href="<?php echo site_url(); ?>department/view_department" class="btn btn-default" title="Back">
+              <span class="hidden-xs">Back</span>
+            </a>
+          </div>
+        </div>
+
         <div class="col-lg-9 col-md-9">
           <div class="panel panel-default">
             <div class="panel-heading">Update Department</div>
@@ -53,17 +62,19 @@ if ( !$_SESSION['u_name'] ) {
                   </div>
                 </div>
 
+                <div class="form-group">
+                  <div class="col-sm-offset-2 col-sm-10">
+                    <input type="submit" name="update_department" class="btn btn-sm btn-warning" value="Update Department">
+                  </div>
+                </div>
+
                 <?php }
                 } else {
                     echo '<div class="alert alert-danger">Department not found!</div>';
                 }
 
                 ?>
-                <div class="form-group">
-                  <div class="col-sm-offset-2 col-sm-10">
-                    <input type="submit" name="update_department" class="btn btn-sm btn-warning" value="Update Department">
-                  </div>
-                </div>
+                
               </form>
             </div>
           </div>
