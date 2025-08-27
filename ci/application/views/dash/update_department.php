@@ -5,8 +5,6 @@ if ( !$_SESSION['u_name'] ) {
 	# code...
 	redirect('home','refresh');
 }
-
-$id = $this->uri->segment(3);
 ?>
 <!doctype html>
 <html lang="en">
@@ -37,29 +35,33 @@ $id = $this->uri->segment(3);
         </div>
         <div class="col-lg-9 col-md-9">
           <div class="panel panel-default">
-            <div class="panel-heading">Add Department</div>
+            <div class="panel-heading">Update Department</div>
             <div class="panel-body">
-              <?php echo form_open('department/update_process_department/'.$id, 'class="form-horizontal"'); ?>
+              <?php echo form_open('department/update_process_department/'.$d_id, 'class="form-horizontal"'); ?>
                 <?php
 
-                $department_list = $this->db->get_where('department', array('d_id' => $id));
+                $department_list = $this->db->get_where('department', array('d_id' => $d_id));
 
-                foreach ($department_list->result() as $department)
-                { ?>
+                if ($department_list->num_rows() > 0) {
+                    foreach ($department_list->result() as $department)
+                    { ?>
                 
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Department Name</label>
                   <div class="col-sm-10">
-                    <input type="text" name="d_name" class="form-control input-sm" value="<?php echo $department->d_name; ?>" placeholder="Department Name">
+                    <input type="text" name="d_name" class="form-control input-sm" value="<?php echo htmlspecialchars($department->d_name); ?>" placeholder="Department Name" required>
                   </div>
                 </div>
 
                 <?php }
+                } else {
+                    echo '<div class="alert alert-danger">Department not found!</div>';
+                }
 
                 ?>
                 <div class="form-group">
                   <div class="col-sm-offset-2 col-sm-10">
-                    <input type="submit" name="update_job" class="btn btn-sm btn-warning" value="Update Department">
+                    <input type="submit" name="update_department" class="btn btn-sm btn-warning" value="Update Department">
                   </div>
                 </div>
               </form>
