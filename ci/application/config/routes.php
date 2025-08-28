@@ -52,3 +52,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'home';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+
+// API Routes
+$route['api/departments'] = 'api_department/departments';
+$route['api/departments/(:num)'] = 'api_department/department/$1';
+$route['api/departments/create'] = 'api_department/create';
+$route['api/departments/update/(:num)'] = 'api_department/update/$1';
+$route['api/departments/delete/(:num)'] = 'api_department/delete/$1';
+
+$route['api/employees'] = 'api_employee/employees';
+$route['api/employees/(:num)'] = 'api_employee/employee/$1';
+$route['api/employees/create'] = 'api_employee/create';
+
+$route['api/auth/login'] = 'api_auth/login';
+$route['api/auth/logout'] = 'api_auth/logout';
+$route['api/auth/status'] = 'api_auth/status';

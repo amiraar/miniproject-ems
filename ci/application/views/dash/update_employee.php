@@ -52,71 +52,76 @@ if ( !$_SESSION['u_name'] ) {
               <?php  
 
               $employee_details = $this->db->get_where('employees', array('e_id'=>$e_id));
-              foreach ($employee_details->result() as $employee) 
-              { ?>
+              if ($employee_details->num_rows() > 0) {
+                foreach ($employee_details->result() as $employee) 
+                { ?>
 
-              <?php echo form_open('employees/update_employee_process/'. $employee->e_id, 'class="form-horizontal"'); ?>
+                <?php echo form_open('employees/update_employee_process/'. $employee->e_id, 'class="form-horizontal"'); ?>
 
-                <div class="form-group">
-                  <label class="col-sm-2 control-label">Name</label>
-                  <div class="col-sm-10">
-                    <input type="text" name="e_name" class="form-control input-sm" placeholder="Name" value="<?php echo $employee->e_name; ?>" required>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">Name</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="e_name" class="form-control input-sm" placeholder="Name" value="<?php echo $employee->e_name; ?>" required>
+                    </div>
                   </div>
-                </div>
 
-                <div class="form-group">
-                  <label class="col-sm-2 control-label">Email ID</label>
-                  <div class="col-sm-10">
-                    <input type="text" name="e_email" class="form-control input-sm" placeholder="Email" value="<?php echo $employee->e_email; ?>" required>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">Email ID</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="e_email" class="form-control input-sm" placeholder="Email" value="<?php echo $employee->e_email; ?>" required>
+                    </div>
                   </div>
-                </div>
 
-                <div class="form-group">
-                  <label class="col-sm-2 control-label">Phone</label>
-                  <div class="col-sm-10">
-                    <input type="text" name="e_phone" class="form-control input-sm" placeholder="Phone" value="<?php echo $employee->e_phone; ?>" required>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">Phone</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="e_phone" class="form-control input-sm" placeholder="Phone" value="<?php echo $employee->e_phone; ?>" required>
+                    </div>
                   </div>
-                </div>
 
-                <div class="form-group">
-                  <label class="col-sm-2 control-label">Select Job</label>
-                  <div class="col-sm-10">
-                    <select name="e_job" id="jobSelect" class="form-control input-sm" required onchange="setDepartment()">
-                      <option value="">-- Select Job --</option>
-                      <?php if (isset($jobs) && !empty($jobs)): ?>
-                        <?php foreach ($jobs as $job): ?>
-                          <option value="<?php echo $job->j_name; ?>" 
-                                  <?php echo ($job->j_name == $employee->e_job) ? 'selected' : ''; ?>
-                                  data-department-id="<?php echo $job->d_id; ?>" 
-                                  data-department-name="<?php echo isset($job->d_name) ? $job->d_name : ''; ?>">
-                            <?php echo $job->j_name; ?> (<?php echo isset($job->d_name) ? $job->d_name : 'No Department'; ?>)
-                          </option>
-                        <?php endforeach; ?>
-                      <?php else: ?>
-                        <option value="">No jobs available. Please add jobs first.</option>
-                      <?php endif; ?>
-                    </select>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">Select Job</label>
+                    <div class="col-sm-10">
+                      <select name="e_job" id="jobSelect" class="form-control input-sm" required onchange="setDepartment()">
+                        <option value="">-- Select Job --</option>
+                        <?php if (isset($jobs) && !empty($jobs)): ?>
+                          <?php foreach ($jobs as $job): ?>
+                            <option value="<?php echo $job->j_name; ?>" 
+                                    <?php echo ($job->j_name == $employee->e_job) ? 'selected' : ''; ?>
+                                    data-department-id="<?php echo $job->d_id; ?>" 
+                                    data-department-name="<?php echo isset($job->d_name) ? $job->d_name : ''; ?>">
+                              <?php echo $job->j_name; ?> (<?php echo isset($job->d_name) ? $job->d_name : 'No Department'; ?>)
+                            </option>
+                          <?php endforeach; ?>
+                        <?php else: ?>
+                          <option value="">No jobs available. Please add jobs first.</option>
+                        <?php endif; ?>
+                      </select>
+                    </div>
                   </div>
-                </div>
 
-                <div class="form-group">
-                  <label class="col-sm-2 control-label">Department</label>
-                  <div class="col-sm-10">
-                    <input type="text" id="departmentDisplay" class="form-control input-sm" placeholder="Department will be auto-filled" readonly>
-                    <input type="hidden" name="e_department" id="departmentId" value="<?php echo isset($employee->e_department) ? $employee->e_department : ''; ?>">
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">Department</label>
+                    <div class="col-sm-10">
+                      <input type="text" id="departmentDisplay" class="form-control input-sm" placeholder="Department will be auto-filled" readonly>
+                      <input type="hidden" name="e_department" id="departmentId" value="<?php echo isset($employee->e_department) ? $employee->e_department : ''; ?>">
+                    </div>
                   </div>
-                </div>
 
-                <div class="form-group">
-                  <div class="col-sm-offset-2 col-sm-10">
-                    <input type="submit" name="update_employee" class="btn btn-sm btn-success" value="Update Employee">
+                  <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                      <input type="submit" name="update_employee" class="btn btn-sm btn-success" value="Update Employee">
+                    </div>
                   </div>
-                </div>
-              </form>
+                </form>
 
-              <?php }
+                <?php }
+                
+              }else{
+                echo '<div class="alert alert-danger">Employee not found!</div>';
+              }
 
-              ?>
+                ?>
             </div>
           </div>
         </div>

@@ -50,54 +50,59 @@ $id = $this->uri->segment(3);
 					<?php  
 
 					$employee_details = $this->db->get_where('employees', array('e_id'=>$id));
-					foreach ($employee_details->result() as $employee) 
-					{ ?>
-				
-					<tr>
-						<th>Date</th>
-						<td><?php echo $employee->e_date; ?></td>
-					</tr>
-					<tr>
-						<th>Name</th>
-						<td><?php echo $employee->e_name; ?></td>
-					</tr>
-					<tr>
-						<th>Email</th>
-						<td><?php echo $employee->e_email; ?></td>
-					</tr>
-					<tr>
-						<th>Phone</th>
-						<td><?php echo $employee->e_phone; ?></td>
-					</tr>
-					<tr>
-						<th>Job</th>
-						<td><?php echo $employee->e_job; ?></td>
-					</tr>
-					<tr>
-						<th>Department</th>
-						<td>
-							<?php
-								if (isset($employee->e_department) && !empty($employee->e_department)) {
-									$department = $this->db->get_where('department', array('d_id' => $employee->e_department))->row();
-									if ($department) {
-										echo $department->d_name;
+					if ($employee_details->num_rows() > 0) {
+						foreach ($employee_details->result() as $employee) 
+						{ ?>
+					
+						<tr>
+							<th>Date</th>
+							<td><?php echo $employee->e_date; ?></td>
+						</tr>
+						<tr>
+							<th>Name</th>
+							<td><?php echo $employee->e_name; ?></td>
+						</tr>
+						<tr>
+							<th>Email</th>
+							<td><?php echo $employee->e_email; ?></td>
+						</tr>
+						<tr>
+							<th>Phone</th>
+							<td><?php echo $employee->e_phone; ?></td>
+						</tr>
+						<tr>
+							<th>Job</th>
+							<td><?php echo $employee->e_job; ?></td>
+						</tr>
+						<tr>
+							<th>Department</th>
+							<td>
+								<?php
+									if (isset($employee->e_department) && !empty($employee->e_department)) {
+										$department = $this->db->get_where('department', array('d_id' => $employee->e_department))->row();
+										if ($department) {
+											echo $department->d_name;
+										} else {
+											echo "Department not found";
+										}
 									} else {
-										echo "Department not found";
+										echo "No Department";
 									}
-								} else {
-									echo "No Department";
-								}
-							?>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<a href="<?php echo site_url(); ?>employees/update_employee/<?php echo $employee->e_id; ?>" class="btn btn-warning btn-sm">Edit</a>
-							<a href="<?php echo site_url(); ?>employees/delete_employee/<?php echo $employee->e_id; ?>" class="btn btn-danger btn-sm">Delete</a>
-						</td>
-					</tr>
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<a href="<?php echo site_url(); ?>employees/update_employee/<?php echo $employee->e_id; ?>" class="btn btn-warning btn-sm">Edit</a>
+								<a href="<?php echo site_url(); ?>employees/delete_employee/<?php echo $employee->e_id; ?>" class="btn btn-danger btn-sm">Delete</a>
+							</td>
+						</tr>
 
-					<?php }
+						<?php }
+
+					} else {
+						echo '<div class="alert alert-danger">Employee not found!</div>';
+					}
 
 					?>
 				</table>
