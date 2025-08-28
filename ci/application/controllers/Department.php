@@ -11,7 +11,8 @@ class Department extends CI_Controller {
 
 	public function index()
 	{
-		$this->load->view('dash/add_department');
+		// Default to listing departments
+		return $this->view_department();
 	}
 
 	public function view_department()
@@ -21,6 +22,11 @@ class Department extends CI_Controller {
 
 	public function add_department()
 	{
+		// Render form on GET
+		if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+			return $this->load->view('dash/add_department');
+		}
+
 		if ( $this->input->post('add_department') ) 
 		{
 			$d_name = $this->input->post('d_name');
@@ -31,7 +37,8 @@ class Department extends CI_Controller {
 
 			$this->Department_jobs->add_department($department_data);
 
-			redirect('department/view_department','refresh');
+			// Go back to list (index now shows list)
+			redirect('department','refresh');
 
 		}
 	}
@@ -58,9 +65,9 @@ class Department extends CI_Controller {
 			);
 			$this->db->where('d_id', $d_id);
 			$this->db->update('department', $department_details);
-			redirect('department/view_department','refresh');
+			redirect('department','refresh');
 		} else {
-			redirect('department/view_department','refresh');
+			redirect('department','refresh');
 		}
 	}
 
@@ -68,7 +75,7 @@ class Department extends CI_Controller {
 	{
 		$this->db->where('d_id', $d_id);
 		$this->db->delete('department');
-		redirect('department/view_department','refresh');
+		redirect('department','refresh');
 	}
 
 }

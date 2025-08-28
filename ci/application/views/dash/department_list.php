@@ -1,80 +1,67 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-if ( !$_SESSION['u_name'] ) {
-	# code...
+if ( !isset($_SESSION['u_name']) || !$_SESSION['u_name'] ) {
 	redirect('home','refresh');
 }
 
 ?>
 <!doctype html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>EMS Project</title>
-    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/button-spacing.css">
-	<!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Departments - CodeIgniter EMS</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/theme.css">
+	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/dashboard.css">
   </head>
   <body>
-    
-    <!-- dash nav -->
-    <?php $this->load->view('dash/inc/nav'); ?>
-    <!-- dash nav -->
 
-	<!-- dash data -->
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-3 col-md-3">
-				<!-- sidebar -->
-				<?php $this->load->view('dash/inc/sidebar'); ?>
-				<!-- sidebar -->
+	<?php $this->load->view('dash/inc/sidebar'); ?>
+	<?php $this->load->view('dash/inc/topnav'); ?>
+
+	<main class="main-content">
+		<div class="card">
+			<div class="card-header d-flex align-items-center">
+				<h5 class="mb-0">Departments List</h5>
+				<a href="<?php echo site_url(); ?>department/add_department" class="btn btn-primary ms-auto">
+					<i class="fas fa-plus me-1"></i> Add New Department
+				</a>
 			</div>
-
-			<div class="col-lg-9 col-md-9">
-				<table class="table table-bordered">
-					<tr>
-						<th class="text-center">ID</th>
-						<th class="text-center">Department</th>
-						<th class="text-center">Actions</th>
-					</tr>
-					<?php  
-
-					$department_list = $this->db->get('department');
-					foreach ($department_list->result() as $department) 
-					{ ?>
-						
-					<tr>
-						<td class="text-center"><?php echo $department->d_id; ?></td>
-						<td><?php echo $department->d_name; ?></td>
-						<td class="text-center">
-							<div class="action-buttons">
-								<a href="<?php echo site_url(); ?>department/update_department/<?php echo $department->d_id; ?>" class="btn btn-warning btn-xs btn-separated" title="Edit">
-									<span class="hidden-xs">Edit</span>
-								</a>
-								<a href="<?php echo site_url(); ?>department/delete_department/<?php echo $department->d_id; ?>" class="btn btn-danger btn-xs btn-separated" title="Delete" onclick="return confirm('Are you sure you want to delete this department?')">
-									<span class="hidden-xs">Delete</span>
-								</a>
-							</div>
-						</td>
-					</tr>
-
-					<?php }
-
-					?>
-				</table>
+			<div class="card-body">
+				<div class="table-responsive">
+					<table class="table table-bordered align-middle mb-0">
+						<thead>
+							<tr>
+								<th class="text-center">ID</th>
+								<th>Department</th>
+								<th class="text-center">Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php
+							$dept_list = $this->db->get('department');
+							foreach ($dept_list->result() as $dept) { ?>
+								<tr>
+									<td class="text-center"><?php echo $dept->d_id; ?></td>
+									<td><?php echo $dept->d_name; ?></td>
+									<td class="text-center">
+										<a href="<?php echo site_url(); ?>department/update_department/<?php echo $dept->d_id; ?>" class="btn btn-sm btn-warning">Edit</a>
+										<a href="<?php echo site_url(); ?>department/delete_department/<?php echo $dept->d_id; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this department?')">Delete</a>
+									</td>
+								</tr>
+							<?php } ?>
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
-	</div>
-	<!-- dash data -->
+	</main>
 
-
-	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-    <script src="<?php echo base_url(); ?>assets/js/bootstrap.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="<?php echo base_url(); ?>assets/js/dashboard.js"></script>
   </body>
 </html>

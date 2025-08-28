@@ -12,8 +12,8 @@ class Jobs extends CI_Controller {
 
 	public function index()
 	{
-		$data['departments'] = $this->Department_jobs->get_all_departments();
-		$this->load->view('dash/add_job', $data);
+		// Default to listing jobs
+		return $this->view_jobs();
 	}
 
 	public function view_jobs()
@@ -24,6 +24,12 @@ class Jobs extends CI_Controller {
 
 	public function add_job()
 	{
+		// Render form on GET
+		if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+			$data['departments'] = $this->Department_jobs->get_all_departments();
+			return $this->load->view('dash/add_job', $data);
+		}
+
 		if ( $this->input->post('add_job') ) 
 		{
 			$j_name = $this->input->post('j_name');
@@ -36,7 +42,8 @@ class Jobs extends CI_Controller {
 
 			$this->Employee_Jobs->add_job($job_data);
 
-			redirect('jobs/view_jobs','refresh');
+			// Go back to list (index now shows list)
+			redirect('jobs','refresh');
 
 		}
 	}
@@ -62,7 +69,7 @@ class Jobs extends CI_Controller {
 			);
 
 			$this->Employee_Jobs->update_job($j_id, $job_data);
-			redirect('jobs/view_jobs','refresh');
+			redirect('jobs','refresh');
 		}
 	}
 
@@ -70,7 +77,7 @@ class Jobs extends CI_Controller {
 	{
 		$this->db->where('j_id', $j_id);
 		$this->db->delete('jobs');
-		redirect('jobs/view_jobs','refresh');
+		redirect('jobs','refresh');
 	}
 
 }

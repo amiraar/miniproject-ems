@@ -11,45 +11,41 @@ class Home extends CI_Controller {
 
 	public function index()
 	{
-		$this->load->view('inc/header');
 		$this->load->view('home');
-		$this->load->view('inc/footer');
 	}
 
 	public function register()
 	{
-		$this->load->view('inc/header');
 		$this->load->view('register');
-		$this->load->view('inc/footer');
 	}
 
 	public function login_process()
 	{
-		if( $this->input->post('u_login') ){
+		if( isset($_POST['u_login']) ){
 			
-			$u_name = $this->input->post('u_name');
-			$u_pass = md5($this->input->post('u_pass'));
+			$u_name = $_POST['u_name'];
+			$u_pass = md5($_POST['u_pass']);
 
-			$user_data = array(
-				'u_name'	=> $u_name,
-				'u_pass'	=> $u_pass
-			);
-
-			$users_list = $this->db->get_where('users', array( 'u_name' => $user_data['u_name'] ));
-			foreach ($users_list->result() as $user) 
-			{
-				if ( $user_data['u_name'] == $user->u_name && $user_data['u_pass'] == $user->u_pass ) 
-				{
-					$_SESSION['u_name'] = $user_data['u_name'];
+			$this->load->database();
+			$users_list = $this->db->get_where('users', array( 'u_name' => $u_name ));
+			
+			if ($users_list->num_rows() > 0) {
+				$user = $users_list->row();
+				
+				if ($u_pass == $user->u_pass) {
+					$this->load->library('session');
+					$this->session->set_userdata('u_name', $u_name);
 					redirect('dash','refresh');
-					
-				}else{
-					echo "<script>alert('Usernamr or Password Incorrect!');</script>";
-					redirect('home','refresh');
+				} else {
+					$data['error'] = 'Username or Password Incorrect!';
+					$this->load->view('home', $data);
 				}
+			} else {
+				$data['error'] = 'Username not found!';
+				$this->load->view('home', $data);
 			}
 
-		}else{
+		} else {
 			redirect('home','refresh');
 		}
 	}

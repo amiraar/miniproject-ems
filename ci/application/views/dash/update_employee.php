@@ -8,46 +8,28 @@ if ( !$_SESSION['u_name'] ) {
 ?>
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>EMS Project</title>
-    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/bootstrap.min.css">
-	<!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <title>Update Employee - CodeIgniter EMS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/theme.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/dashboard.css">
   </head>
   <body>
-    
-    <!-- dash nav -->
-    <?php $this->load->view('dash/inc/nav'); ?>
-    <!-- dash nav -->
+    <?php $this->load->view('dash/inc/sidebar'); ?>
+    <?php $this->load->view('dash/inc/topnav'); ?>
 
-    <!-- dash data -->
-    <div class="container">
-      <div class="row">
-
-        <div class="col-lg-3 col-md-3">
-          <!-- sidebar -->
-          <?php $this->load->view('dash/inc/sidebar'); ?>
-          <!-- sidebar -->
-        </div>
-
-        <div class="col-lg-9 col-md-9">
-          <div class="action-buttons">
-            <a href="<?php echo site_url(); ?>employees" class="btn btn-default" title="Back">
-              <span class="hidden-xs">Back</span>
-            </a>
-          </div>
-        </div>
-
-        <div class="col-lg-9 col-md-9">
-          <div class="panel panel-default">
-            <div class="panel-heading">Update Employee</div>
-            <div class="panel-body">
+    <main class="main-content">
+      <div class="mb-3">
+        <a href="<?php echo site_url(); ?>employees" class="btn btn-outline-secondary btn-sm">Back</a>
+      </div>
+      <div class="card">
+        <div class="card-header">Update Employee</div>
+        <div class="card-body">
 
               <?php  
 
@@ -123,30 +105,22 @@ if ( !$_SESSION['u_name'] ) {
 
                 ?>
             </div>
-          </div>
         </div>
       </div>
-    </div>
-    <!-- dash data -->
+    </main>
 
-    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-    <script src="<?php echo base_url(); ?>assets/js/bootstrap.min.js"></script>
-    
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="<?php echo base_url(); ?>assets/js/dashboard.js"></script>
     <script>
     function setDepartment() {
         var jobSelect = document.getElementById('jobSelect');
         var selectedOption = jobSelect.options[jobSelect.selectedIndex];
         var departmentId = selectedOption.getAttribute('data-department-id');
         var departmentName = selectedOption.getAttribute('data-department-name');
-        
         document.getElementById('departmentId').value = departmentId || '';
         document.getElementById('departmentDisplay').value = departmentName || '';
     }
-    
-    // Set department on page load based on current job selection
-    document.addEventListener('DOMContentLoaded', function() {
-        setDepartment();
-    });
+    document.addEventListener('DOMContentLoaded', function() { setDepartment(); });
     </script>
   </body>
 </html>

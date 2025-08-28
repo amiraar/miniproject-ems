@@ -1,33 +1,137 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $title ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        .endpoint-card { margin-bottom: 1rem; }
+        :root {
+            --bs-border-radius: 0.75rem;
+            --transition-speed: 0.3s;
+        }
+        
+        .endpoint-card { 
+            margin-bottom: 1rem; 
+            border-radius: var(--bs-border-radius);
+            transition: all var(--transition-speed) ease;
+        }
+        
+        .endpoint-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        }
+        
         .method-get { background: #28a745; }
         .method-post { background: #007bff; }
         .method-put { background: #ffc107; color: #000; }
         .method-delete { background: #dc3545; }
-        .method-badge { color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
-        .response-example { background: #f8f9fa; padding: 15px; border-radius: 5px; margin-top: 10px; }
-        pre { margin: 0; font-size: 14px; }
-        .hero-section { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2rem 0; margin-bottom: 2rem; }
-        .api-status { padding: 5px 10px; border-radius: 15px; font-size: 12px; font-weight: bold; }
-        .status-working { background: #28a745; color: white; }
-        .feature-icon { font-size: 2rem; margin-bottom: 1rem; }
+        .method-badge { 
+            color: white; 
+            padding: 6px 12px; 
+            border-radius: 6px; 
+            font-size: 12px; 
+            font-weight: bold; 
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .response-example { 
+            background: var(--bs-light); 
+            padding: 15px; 
+            border-radius: var(--bs-border-radius); 
+            margin-top: 10px; 
+            border: 1px solid var(--bs-border-color);
+        }
+        
+        pre { 
+            margin: 0; 
+            font-size: 14px; 
+        }
+        
+        .hero-section { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            color: white; 
+            padding: 3rem 0; 
+            margin-bottom: 2rem; 
+            border-radius: 0 0 var(--bs-border-radius) var(--bs-border-radius);
+        }
+        
+        .api-status { 
+            padding: 8px 16px; 
+            border-radius: 25px; 
+            font-size: 14px; 
+            font-weight: bold; 
+        }
+        
+        .status-working { 
+            background: #28a745; 
+            color: white; 
+        }
+        
+        .feature-icon { 
+            font-size: 2.5rem; 
+            margin-bottom: 1rem; 
+        }
+        
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1050;
+            border-radius: 50px;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: all var(--transition-speed) ease;
+        }
+        
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .theme-toggle i {
+            font-size: 1.5rem;
+            transition: transform var(--transition-speed) ease;
+        }
+        
+        .theme-toggle:hover i {
+            transform: rotate(180deg);
+        }
+        
+        @media (max-width: 768px) {
+            .theme-toggle {
+                width: 50px;
+                height: 50px;
+                top: 15px;
+                right: 15px;
+            }
+            
+            .theme-toggle i {
+                font-size: 1.2rem;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- Theme Toggle Button -->
+    <button class="btn btn-primary theme-toggle" id="themeToggle" title="Toggle Dark/Light Mode">
+        <i class="fas fa-moon" id="themeIcon"></i>
+    </button>
+
     <!-- Hero Section -->
     <div class="hero-section">
         <div class="container text-center">
             <h1 class="display-4">🚀 CodeIgniter EMS API</h1>
             <p class="lead">RESTful API Documentation & Testing Interface</p>
-            <span class="api-status status-working">✅ ACTIVE</span>
+            <span class="api-status status-working">✅ ACTIVE & WORKING</span>
         </div>
     </div>
 
@@ -311,20 +415,81 @@ Invoke-RestMethod -Uri "http://localhost/CodeIgniter-EMS/ci/index.php/api/depart
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         const baseUrl = 'http://localhost/CodeIgniter-EMS/ci/index.php/api';
+        
+        // Theme Manager Class
+        class ThemeManager {
+            constructor() {
+                this.theme = localStorage.getItem('theme') || 'light';
+                this.toggleBtn = document.getElementById('themeToggle');
+                this.themeIcon = document.getElementById('themeIcon');
+                
+                this.init();
+            }
+            
+            init() {
+                this.applyTheme(this.theme);
+                this.toggleBtn.addEventListener('click', () => this.toggleTheme());
+            }
+            
+            toggleTheme() {
+                this.theme = this.theme === 'light' ? 'dark' : 'light';
+                this.applyTheme(this.theme);
+                localStorage.setItem('theme', this.theme);
+            }
+            
+            applyTheme(theme) {
+                document.documentElement.setAttribute('data-bs-theme', theme);
+                
+                if (theme === 'dark') {
+                    this.themeIcon.className = 'fas fa-sun';
+                    this.toggleBtn.title = 'Switch to Light Mode';
+                } else {
+                    this.themeIcon.className = 'fas fa-moon';
+                    this.toggleBtn.title = 'Switch to Dark Mode';
+                }
+            }
+        }
         
         function copyToClipboard(elementId) {
             const element = document.getElementById(elementId);
             const text = element.textContent || element.value;
             navigator.clipboard.writeText(text).then(() => {
-                alert('Copied to clipboard!');
+                // Create toast notification
+                const toast = document.createElement('div');
+                toast.className = 'toast-notification';
+                toast.innerHTML = '<i class="fas fa-check me-2"></i>Copied to clipboard!';
+                toast.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background: var(--bs-success);
+                    color: white;
+                    padding: 12px 20px;
+                    border-radius: 25px;
+                    z-index: 9999;
+                    font-size: 14px;
+                    font-weight: 500;
+                `;
+                document.body.appendChild(toast);
+                
+                setTimeout(() => {
+                    document.body.removeChild(toast);
+                }, 2000);
             });
         }
         
         async function testApi(endpoint, method) {
             const responseDiv = document.getElementById('apiResponse');
-            responseDiv.innerHTML = '<div class="text-info"><span class="spinner-border spinner-border-sm me-2"></span>Testing API...</div>';
+            responseDiv.innerHTML = `
+                <div class="text-info d-flex align-items-center">
+                    <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                    <span>Testing API endpoint...</span>
+                </div>
+            `;
             
             try {
                 const response = await fetch(baseUrl + endpoint, {
@@ -339,8 +504,14 @@ Invoke-RestMethod -Uri "http://localhost/CodeIgniter-EMS/ci/index.php/api/depart
                 
                 responseDiv.innerHTML = `
                     <div class="mb-3">
-                        <h6>${response.ok ? '✅' : '❌'} Response (${response.status} ${response.statusText}):</h6>
-                        <small class="text-muted">URL: ${baseUrl + endpoint}</small>
+                        <h6 class="d-flex align-items-center">
+                            ${response.ok ? '<i class="fas fa-check-circle text-success me-2"></i>' : '<i class="fas fa-times-circle text-danger me-2"></i>'}
+                            Response (${response.status} ${response.statusText})
+                        </h6>
+                        <small class="text-muted">
+                            <i class="fas fa-link me-1"></i>
+                            ${baseUrl + endpoint}
+                        </small>
                     </div>
                     <pre><code class="language-json">${JSON.stringify(data, null, 2)}</code></pre>
                 `;
@@ -350,8 +521,8 @@ Invoke-RestMethod -Uri "http://localhost/CodeIgniter-EMS/ci/index.php/api/depart
             } catch (error) {
                 responseDiv.innerHTML = `
                     <div class="alert alert-danger">
-                        <h6>❌ Error:</h6>
-                        <p>${error.message}</p>
+                        <h6><i class="fas fa-exclamation-triangle me-2"></i>Error:</h6>
+                        <p class="mb-0">${error.message}</p>
                     </div>
                 `;
             }
@@ -359,6 +530,10 @@ Invoke-RestMethod -Uri "http://localhost/CodeIgniter-EMS/ci/index.php/api/depart
         
         async function testApiWithId() {
             const id = document.getElementById('deptId').value;
+            if (!id) {
+                alert('Please enter a department ID');
+                return;
+            }
             await testApi(`/departments/${id}`, 'GET');
         }
         
@@ -371,7 +546,12 @@ Invoke-RestMethod -Uri "http://localhost/CodeIgniter-EMS/ci/index.php/api/depart
             }
             
             const responseDiv = document.getElementById('apiResponse');
-            responseDiv.innerHTML = '<div class="text-info"><span class="spinner-border spinner-border-sm me-2"></span>Creating department...</div>';
+            responseDiv.innerHTML = `
+                <div class="text-info d-flex align-items-center">
+                    <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                    <span>Creating department...</span>
+                </div>
+            `;
             
             try {
                 const response = await fetch(baseUrl + '/departments/create', {
@@ -389,8 +569,14 @@ Invoke-RestMethod -Uri "http://localhost/CodeIgniter-EMS/ci/index.php/api/depart
                 
                 responseDiv.innerHTML = `
                     <div class="mb-3">
-                        <h6>${response.ok ? '✅' : '❌'} Create Response (${response.status} ${response.statusText}):</h6>
-                        <small class="text-muted">URL: ${baseUrl}/departments/create</small>
+                        <h6 class="d-flex align-items-center">
+                            ${response.ok ? '<i class="fas fa-check-circle text-success me-2"></i>' : '<i class="fas fa-times-circle text-danger me-2"></i>'}
+                            Create Response (${response.status} ${response.statusText})
+                        </h6>
+                        <small class="text-muted">
+                            <i class="fas fa-link me-1"></i>
+                            ${baseUrl}/departments/create
+                        </small>
                     </div>
                     <pre><code class="language-json">${JSON.stringify(data, null, 2)}</code></pre>
                 `;
@@ -400,20 +586,63 @@ Invoke-RestMethod -Uri "http://localhost/CodeIgniter-EMS/ci/index.php/api/depart
                 // Clear the input if successful
                 if (response.ok) {
                     document.getElementById('newDeptName').value = '';
+                    // Show success notification
+                    const toast = document.createElement('div');
+                    toast.innerHTML = '<i class="fas fa-check me-2"></i>Department created successfully!';
+                    toast.style.cssText = `
+                        position: fixed;
+                        top: 20px;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        background: var(--bs-success);
+                        color: white;
+                        padding: 12px 20px;
+                        border-radius: 25px;
+                        z-index: 9999;
+                        font-size: 14px;
+                        font-weight: 500;
+                    `;
+                    document.body.appendChild(toast);
+                    
+                    setTimeout(() => {
+                        document.body.removeChild(toast);
+                    }, 3000);
                 }
                 
             } catch (error) {
                 responseDiv.innerHTML = `
                     <div class="alert alert-danger">
-                        <h6>❌ Create Error:</h6>
-                        <p>${error.message}</p>
+                        <h6><i class="fas fa-exclamation-triangle me-2"></i>Create Error:</h6>
+                        <p class="mb-0">${error.message}</p>
                     </div>
                 `;
             }
         }
         
-        // Initialize syntax highlighting
-        Prism.highlightAll();
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize theme manager
+            new ThemeManager();
+            
+            // Initialize syntax highlighting
+            Prism.highlightAll();
+            
+            // Add smooth scroll behavior
+            document.documentElement.style.scrollBehavior = 'smooth';
+            
+            // Add entrance animations
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'all 0.3s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 100 * index);
+            });
+        });
     </script>
 </body>
 </html>
